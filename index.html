@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahe Dileep — Vision & Robotics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f3;
+      --bg-card: #f4f0e6;
+      --ink: #1a1814;
+      --ink-soft: #4a463e;
+      --ink-muted: #7d786c;
+      --accent: #c2410c;
+      --accent-soft: #ea580c;
+      --rule: #d4cfc0;
+      --grid: rgba(26, 24, 20, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-position: -1px -1px;
+      color: var(--ink);
+      font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 80px 32px 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── Header ─── */
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 96px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--rule);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .nameplate {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .marker {
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      transform: translateY(-1px);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: translateY(-1px) scale(1);
+      }
+
+      50% {
+        opacity: 0.6;
+        transform: translateY(-1px) scale(0.85);
+      }
+    }
+
+    .nameplate h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: 26px;
+      letter-spacing: -0.01em;
+      font-feature-settings: "ss01" on;
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+    }
+
+    nav a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color 0.15s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      margin-bottom: 96px;
+      animation: rise 0.7s ease both;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero .meta::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--ink-muted);
+    }
+
+    .hero h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(36px, 5.5vw, 56px);
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      margin-bottom: 32px;
+      font-feature-settings: "ss01" on, "ss02" on;
+      max-width: 18ch;
+    }
+
+    .hero h2 em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 56ch;
+      margin-bottom: 32px;
+    }
+
+    .hero-desc a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: background 0.15s ease;
+      padding-bottom: 1px;
+    }
+
+    .hero-desc a:hover {
+      background: rgba(194, 65, 12, 0.08);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 24px;
+      padding-top: 32px;
+      border-top: 1px dashed var(--rule);
+    }
+
+    .stat {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ─── Section heading ─── */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-head .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .section-head h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── Currently Working On ─── */
+    .now-section {
+      margin-bottom: 96px;
+    }
+
+    .now-card {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      padding: 28px 32px;
+      position: relative;
+    }
+
+    .now-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 24px;
+      height: 24px;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+    }
+
+    .now-card::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 24px;
+      height: 24px;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+    }
+
+    .now-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.15);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .now-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .now-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 20px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .now-desc {
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    /* ─── Projects ─── */
+    .projects-section {
+      margin-bottom: 96px;
+    }
+
+    .project {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 32px;
+      transition: padding-left 0.25s ease;
+    }
+
+    .project:hover {
+      padding-left: 12px;
+    }
+
+    .project:last-child {
+      border-bottom: none;
+    }
+
+    .project-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-muted);
+      padding-top: 4px;
+    }
+
+    .project-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: 20px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .project-title a {
+      color: var(--ink);
+      text-decoration: none;
+      background-image: linear-gradient(var(--accent), var(--accent));
+      background-size: 0% 1px;
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      transition: background-size 0.3s ease;
+    }
+
+    .project-title a:hover {
+      background-size: 100% 1px;
+      color: var(--accent);
+    }
+
+    .project-desc {
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.55;
+      margin-bottom: 12px;
+      max-width: 56ch;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      padding: 3px 8px;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+    }
+
+    .tag.status-soon {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(194, 65, 12, 0.05);
+    }
+
+    /* ─── Writing ─── */
+    .writing-section {
+      margin-bottom: 96px;
+    }
+
+    .empty-state {
+      background: var(--bg-card);
+      border: 1px dashed var(--rule);
+      padding: 40px 32px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    .empty-state .blink {
+      animation: blink 1.2s steps(2) infinite;
+      color: var(--accent);
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ─── Reading Now ─── */
+    .reading-section {
+      margin-bottom: 96px;
+    }
+
+    .reading-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .reading-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 24px;
+      padding: 16px 0;
+      border-bottom: 1px dashed var(--rule);
+      align-items: baseline;
+    }
+
+    .reading-item:last-child {
+      border-bottom: none;
+    }
+
+    .reading-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .reading-title {
+      font-size: 15px;
+      color: var(--ink);
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+    }
+
+    .reading-author {
+      color: var(--ink-muted);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      margin-top: 96px;
+      padding-top: 32px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* ─── Mobile ─── */
+    @media (max-width: 640px) {
+      main {
+        padding: 48px 20px 80px;
+      }
+
+      header {
+        margin-bottom: 56px;
+      }
+
+      .hero {
+        margin-bottom: 56px;
+      }
+
+      .now-section,
+      .projects-section,
+      .writing-section,
+      .reading-section {
+        margin-bottom: 56px;
+      }
+
+      .project {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .project-date {
+        padding-top: 0;
+      }
+
+      .reading-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      nav {
+        gap: 16px;
+      }
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HEADER -->
+    <header>
+      <div class="nameplate">
+        <span class="marker"></span>
+        <h1>Mahe Dileep</h1>
+      </div>
+      <nav>
+        <a href="#now">now</a>
+        <a href="#projects">projects</a>
+        <a href="#writing">writing</a>
+        <a href="#reading">reading</a>
+      </nav>
+    </header>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HERO -->
+    <section class="hero">
+      <div class="meta">VISION + ROBOTICS · INDEPENDENT RESEARCHER</div>
+      <h2>Teaching machines to <em>see</em> and <em>act</em> in the world.</h2>
+      <p class="hero-desc">
+        I'm a high school student in Michigan working independently on vision-based imitation learning,
+        vision-language-action models, and applied computer vision for problems that matter. Drawn especially to the
+        moment where perception meets control. Long-term: a PhD in machine learning, focused on embodied AI.
+      </p>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Location</div>
+          <div class="stat-value">Michigan, USA</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Focus</div>
+          <div class="stat-value">Vision · Robotics · NLP · RL · LLMs</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Status</div>
+          <div class="stat-value">Open to mentorship</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ NOW -->
+    <section class="now-section" id="now">
+      <div class="section-head">
+        <span class="num">01 /</span>
+        <h3>Currently working on</h3>
+      </div>
+      <div class="now-card">
+        <div class="now-header">
+          <span class="live-dot"></span>
+          <span class="now-label">Live · Summer 2026</span>
+        </div>
+        <div class="now-title">Reproducing Diffusion Policy and studying visual encoder choice for manipulation</div>
+        <p class="now-desc">
+          Setting up the LIBERO simulation environment, reproducing Diffusion Policy as a baseline, then running a
+          controlled study of how pretrained visual encoders (ResNet, DINOv2, CLIP, SigLIP) affect behavior cloning
+          policy success rates. Writeup coming end of summer.
+        </p>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ PROJECTS -->
+    <section class="projects-section" id="projects">
+      <div class="section-head">
+        <span class="num">02 /</span>
+        <h3>Projects</h3>
+      </div>
+
+      <div class="project">
+        <div class="project-date">2026 · Q3</div>
+        <div>
+          <div class="project-title">
+            <a href="#">Visual encoder benchmark for manipulation policies →</a>
+          </div>
+          <p class="project-desc">
+            A matched-compute comparison of pretrained vision backbones (ResNet, ViT, DINOv2, CLIP, SigLIP, Theia) as
+            perception modules for behavior cloning on LIBERO. Three seeds per condition, three task suites, clean
+            ablation.
+          </p>
+          <div class="project-tags">
+            <span class="tag status-soon">In progress</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">LIBERO</span>
+            <span class="tag">Imitation Learning</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-date">2026 · Q3</div>
+        <div>
+          <div class="project-title">
+            <a href="#">Diffusion Policy reproduction →</a>
+          </div>
+          <p class="project-desc">
+            From-scratch implementation of Chi et al.'s Diffusion Policy on a Robomimic manipulation task. Goal:
+            understand the architecture deeply enough to extend it. Includes minimal ~500-line reference implementation
+            alongside the official codebase.
+          </p>
+          <div class="project-tags">
+            <span class="tag status-soon">In progress</span>
+            <span class="tag">Diffusion</span>
+            <span class="tag">Robomimic</span>
+            <span class="tag">From scratch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-date">2026 · Q2</div>
+        <div>
+          <div class="project-title">
+            <a href="#">micrograd & makemore →</a>
+          </div>
+          <p class="project-desc">
+            Working through Karpathy's "Neural Networks: Zero to Hero" series — implementing autograd, bigram models,
+            and a transformer from scratch in pure Python and PyTorch. Foundation work, not a contribution, but each
+            implementation lives on GitHub.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Fundamentals</span>
+            <span class="tag">Autograd</span>
+            <span class="tag">Transformers</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ WRITING -->
+    <section class="writing-section" id="writing">
+      <div class="section-head">
+        <span class="num">03 /</span>
+        <h3>Writing</h3>
+      </div>
+      <div class="empty-state">
+        <span class="blink">▌</span> First posts coming summer 2026<br>
+        <span style="color: var(--ink-muted); opacity: 0.7;">— project writeups, paper deep-dives, things I've learned
+          the hard way</span>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ READING -->
+    <section class="reading-section" id="reading">
+      <div class="section-head">
+        <span class="num">04 /</span>
+        <h3>Reading</h3>
+      </div>
+      <div class="reading-list">
+        <div class="reading-item">
+          <span class="reading-status">Now</span>
+          <span class="reading-title">Diffusion Policy: Visuomotor Policy Learning via Action Diffusion</span>
+          <span class="reading-author">Chi et al. · 2023</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-status">Now</span>
+          <span class="reading-title">OpenVLA: An Open-Source Vision-Language-Action Model</span>
+          <span class="reading-author">Kim et al. · 2024</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-status">Recent</span>
+          <span class="reading-title">DINOv2: Learning Robust Visual Features without Supervision</span>
+          <span class="reading-author">Oquab et al. · 2023</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-status">Recent</span>
+          <span class="reading-title">RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic
+            Control</span>
+          <span class="reading-author">Brohan et al. · 2023</span>
+        </div>
+        <div class="reading-item">
+          <span class="reading-status">Recent</span>
+          <span class="reading-title">Attention Is All You Need</span>
+          <span class="reading-author">Vaswani et al. · 2017</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FOOTER -->
+    <footer>
+      <div>Last updated · May 2026</div>
+      <div class="footer-links">
+        <a href="mailto:maheswardileep829@gmail.com">email</a>
+        <a href="https://github.com/md21232" target="_blank">github</a>
+        <a href="https://x.com/mahedileep1" target="_blank">x</a>
+        <a href="https://huggingface.co/mahe1" target="_blank">huggingface</a>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Subtle parallax on grid background when scrolling
+    let ticking = false;
+    document.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          document.body.style.backgroundPosition = `-1px ${-1 - y * 0.03}px, ${-1}px ${-1 - y * 0.03}px`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Reveal projects on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.project, .reading-item, .now-card').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(8px)';
+      el.style.transition = `opacity 0.5s ease ${i * 0.05}s, transform 0.5s ease ${i * 0.05}s`;
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+
+</html>
